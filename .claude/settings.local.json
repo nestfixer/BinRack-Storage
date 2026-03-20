@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__Claude_Preview__preview_start",
+      "Bash(netstat -ano)",
+      "Bash(command -v node npm npx)",
+      "Bash(taskkill /PID 24312 /F)",
+      "Bash(taskkill /PID 9584 /F)"
+    ]
+  }
+}
