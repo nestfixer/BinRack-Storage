@@ -1,4 +1,11 @@
 Options -MultiViews
 RewriteEngine On
+RewriteBase /
+
+# Skip rewriting if URI is inside assets/ or photos/ directories
+RewriteCond %{REQUEST_URI} !^/assets/
+RewriteCond %{REQUEST_URI} !^/photos/
+# Skip rewriting if the file or directory actually exists
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^ index.html [QSA,L]
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ /index.html [L]
