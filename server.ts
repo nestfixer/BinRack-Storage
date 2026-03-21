@@ -11,8 +11,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Serve static files (CSS, images, JS, etc.) from the project root
-app.use(express.static(__dirname));
+// Serve static files (CSS, images, JS, etc.) from the Vite build output
+app.use(express.static(path.join(__dirname, 'dist')));
 
 app.post('/api/quote', (req, res) => {
   const {
@@ -52,7 +52,7 @@ app.post('/api/quote', (req, res) => {
 
 // Serve index.html for the root route
 app.get('/', (_req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
 const PORT = process.env.PORT || 8080;
