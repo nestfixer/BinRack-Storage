@@ -1,10 +1,18 @@
 import 'dotenv/config';
 import cors from 'cors';
 import express from 'express';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// Serve static files (CSS, images, JS, etc.) from the project root
+app.use(express.static(__dirname));
 
 app.post('/api/quote', (req, res) => {
   const {
@@ -42,7 +50,21 @@ app.post('/api/quote', (req, res) => {
   res.json({ success: true });
 });
 
-const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
-  console.log(`BinRack API server running on port ${PORT}`);
+// Serve index.html for the root route
+app.get('/', (_req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+const PORT = process.env.PORT || 8080;
+const server = app.listen(PORT, () => {
+  console.log(`BinRack server running on port ${PORT}`);
+});
+
+// Graceful shutdown — wait for in-flight requests to finish before exiting
+process.on('SIGTERM', () => {
+  console.log('SIGTERM received, shutting down gracefully...');
+  server.close(() => {
+    console.log('Server closed');
+    process.exit(0);
+  });
 });
